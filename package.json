@@ -1,5 +1,5 @@
 {
-  "name": "react-native-phone-number-input",
+  "name": "@linhnguyen96114/react-native-phone-input",
   "version": "3.1.0",
   "description": "React Native component for phone number",
   "source": "./src/index.tsx",
@@ -56,14 +56,15 @@
     "type": "git",
     "url": "git+https://github.com/linhnguyen-gt/react-native-phone-number-input.git"
   },
-  "author": "Linh Nguyen <43808684+linhnguyen-gt@users.noreply.github.com> (https://github.com/linhnguyen-gt/react-native-phone-number-input)",
+  "author": "Linh Nguyen <linhnguyen96114@gmail.com> (https://github.com/linhnguyen-gt/react-native-phone-number-input)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/linhnguyen-gt/react-native-phone-number-input/issues"
   },
   "homepage": "https://github.com/linhnguyen-gt/react-native-phone-number-input#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
@@ -195,5 +196,8 @@
     "google-libphonenumber": "^3.2.38",
     "node-emoji": "^2.1.3",
     "react-async-hook": "^4.0.0"
+  },
+  "directories": {
+    "example": "example"
   }
 }

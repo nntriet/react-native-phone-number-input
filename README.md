@@ -37,9 +37,9 @@
 
 bash
 Using npm
-npm install react-native-phone-number-input
+npm i @linhnguyen96114/react-native-phone-input
 Using yarn
-yarn add react-native-phone-number-input
+yarn add @linhnguyen96114/react-native-phone-input
 
 ## 💡 Usage
 
