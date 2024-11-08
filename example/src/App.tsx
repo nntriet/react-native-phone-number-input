@@ -1,5 +1,7 @@
-import React from 'react';
-import { useRef, useState } from 'react';
+import PhoneInput, {
+  type PhoneInputRefType,
+} from '@linhnguyen96114/react-native-phone-input';
+import React, { useRef, useState } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -8,9 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import PhoneInput, {
-  type PhoneInputRefType,
-} from 'react-native-phone-number-input';
+
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const App = () => {

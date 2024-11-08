@@ -44,7 +44,9 @@ yarn add @linhnguyen96114/react-native-phone-input
 ## 💡 Usage
 
 ```tsx
-import PhoneInput from "react-native-phone-number-input";
+import PhoneInput, {
+  type PhoneInputRefType,
+} from '@linhnguyen96114/react-native-phone-input';
 const App = () => {
   const [value, setValue] = useState('');
   const [countryCode, setCountryCode] = useState('');
