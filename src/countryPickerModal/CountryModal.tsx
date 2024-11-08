@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
-import { AnimatedModal } from './AnimatedModal';
+import AnimatedModal from './AnimatedModal';
 import { CountryModalContext } from './CountryModalProvider';
 import { useTheme } from './CountryTheme';
 import { Modal } from './Modal';
@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
 
 const CountryModal = ({
   animationType = 'slide',
-  animated = true,
   withModal = true,
   disableNativeModal = false,
   children,
@@ -39,24 +38,26 @@ const CountryModal = ({
     if (disableNativeModal) {
       teleport!(<AnimatedModal {...props}>{content}</AnimatedModal>);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disableNativeModal]);
   if (withModal) {
     if (Platform.OS === 'web') {
-      return <Modal {...props}>{content}</Modal>;
+      return (
+        <Modal animationType={animationType} {...props}>
+          {content}
+        </Modal>
+      );
     }
     if (disableNativeModal) {
       return null;
     }
-    return <Modal {...props}>{content}</Modal>;
+    return (
+      <Modal animationType={animationType} {...props}>
+        {content}
+      </Modal>
+    );
   }
   return content;
 };
-
-// CountryModal.defaultProps = {
-//   animationType: 'slide',
-//   animated: true,
-//   withModal: true,
-//   disableNativeModal: false,
-// }
 
 export default CountryModal;

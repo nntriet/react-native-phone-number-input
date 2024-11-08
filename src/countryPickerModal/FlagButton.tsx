@@ -1,17 +1,17 @@
-import React, { useState, useEffect, ReactNode, memo } from 'react'
+import { memo, useEffect, useState, type ReactNode } from 'react';
 import {
-  TouchableOpacity,
   StyleSheet,
+  TouchableOpacity,
   View,
-  StyleProp,
-  ViewStyle,
-  TextProps,
-} from 'react-native'
-import { CountryCode } from './types'
-import { Flag } from './Flag'
-import { useContext } from './CountryContext'
-import { CountryText } from './CountryText'
-import { useTheme } from './CountryTheme'
+  type StyleProp,
+  type TextProps,
+  type ViewStyle,
+} from 'react-native';
+import { useContext } from './CountryContext';
+import { CountryText } from './CountryText';
+import { useTheme } from './CountryTheme';
+import { Flag } from './Flag';
+import { type CountryCode } from './types';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   something: { fontSize: 16 },
-})
+});
 
 type FlagWithSomethingProp = Pick<
   FlagButtonProps,
@@ -41,11 +41,11 @@ type FlagWithSomethingProp = Pick<
   | 'withCallingCodeButton'
   | 'withFlagButton'
   | 'placeholder'
-> & { flagSize: number; allowFontScaling?: boolean }
+> & { flagSize: number; allowFontScaling?: boolean };
 
 const FlagText = (props: TextProps & { children: ReactNode }) => (
   <CountryText {...props} style={styles.something} />
-)
+);
 
 const FlagWithSomething = memo(
   ({
@@ -59,32 +59,31 @@ const FlagWithSomething = memo(
     flagSize,
     placeholder,
   }: FlagWithSomethingProp) => {
-    const { translation, getCountryInfoAsync } = useContext()
+    const { translation, getCountryInfoAsync } = useContext();
     const [state, setState] = useState({
       countryName: '',
       currency: '',
       callingCode: '',
-    })
-    const { countryName, currency, callingCode } = state
+    });
+    const { countryName, currency, callingCode } = state;
     useEffect(() => {
       if (countryCode) {
         getCountryInfoAsync({ countryCode, translation })
           .then(setState)
-          .catch(console.warn)
+          .catch(console.warn);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
       countryCode,
       withCountryNameButton,
       withCurrencyButton,
       withCallingCodeButton,
-    ])
+    ]);
 
     return (
       <View style={styles.flagWithSomethingContainer}>
         {countryCode ? (
-          <Flag
-            {...{ withEmoji, countryCode, withFlagButton, flagSize }}
-          />
+          <Flag {...{ withEmoji, countryCode, withFlagButton, flagSize }} />
         ) : (
           <FlagText allowFontScaling={allowFontScaling}>{placeholder}</FlagText>
         )}
@@ -105,21 +104,21 @@ const FlagWithSomething = memo(
           >{`+${callingCode}`}</FlagText>
         ) : null}
       </View>
-    )
-  },
-)
+    );
+  }
+);
 
 export interface FlagButtonProps {
-  allowFontScaling?: boolean
-  withEmoji?: boolean
-  withCountryNameButton?: boolean
-  withCurrencyButton?: boolean
-  withCallingCodeButton?: boolean
-  withFlagButton?: boolean
-  containerButtonStyle?: StyleProp<ViewStyle>
-  countryCode?: CountryCode
-  placeholder: string
-  onOpen?(): void
+  allowFontScaling?: boolean;
+  withEmoji?: boolean;
+  withCountryNameButton?: boolean;
+  withCurrencyButton?: boolean;
+  withCallingCodeButton?: boolean;
+  withFlagButton?: boolean;
+  containerButtonStyle?: StyleProp<ViewStyle>;
+  countryCode?: CountryCode;
+  placeholder: string;
+  onOpen?(): void;
 }
 
 export const FlagButton = ({
@@ -134,7 +133,7 @@ export const FlagButton = ({
   onOpen,
   placeholder,
 }: FlagButtonProps) => {
-  const { flagSizeButton: flagSize } = useTheme()
+  const { flagSizeButton: flagSize } = useTheme();
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={onOpen}>
       <View
@@ -159,8 +158,8 @@ export const FlagButton = ({
         />
       </View>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 FlagButton.defaultProps = {
   withEmoji: true,
@@ -168,4 +167,4 @@ FlagButton.defaultProps = {
   withCallingCodeButton: false,
   withCurrencyButton: false,
   withFlagButton: true,
-}
+};

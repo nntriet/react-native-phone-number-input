@@ -43,6 +43,8 @@ const CountryFilter: React.FC<CountryFilterProps> = ({
         styles.input,
         { fontFamily, fontSize, color: onBackgroundTextColor },
       ]}
+      placeholder={placeholder}
+      autoFocus={autoFocus}
       {...props}
     />
   );

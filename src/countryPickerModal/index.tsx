@@ -73,7 +73,7 @@ export default Main;
 export { default as CountryFilter } from './CountryFilter';
 export { default as CountryList } from './CountryList';
 export { default as CountryModal } from './CountryModal';
-export { CountryModalProvider } from './CountryModalProvider';
+export { default as CountryModalProvider } from './CountryModalProvider';
 export {
   getCountriesAsync as getAllCountries,
   getCountryCallingCodeAsync as getCallingCode,

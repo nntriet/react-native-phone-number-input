@@ -249,25 +249,25 @@ export const CountryCodeList = [
   'KI',
   'HK',
   'AX',
-] as const
+] as const;
 
-export type CountryCode = (typeof CountryCodeList)[number]
+export type CountryCode = (typeof CountryCodeList)[number];
 
-export type CallingCode = string
+export type CallingCode = string;
 
-export type CurrencyCode = string
+export type CurrencyCode = string;
 
 export type TranslationLanguageCodeMap = {
-  [key in TranslationLanguageCode]: string
-}
+  [key in TranslationLanguageCode]: string;
+};
 export interface Country {
-  region: Region
-  subregion: Subregion
-  currency: CurrencyCode[]
-  callingCode: CallingCode[]
-  flag: string
-  name: TranslationLanguageCodeMap | string
-  cca2: CountryCode
+  region: Region;
+  subregion: Subregion;
+  currency: CurrencyCode[];
+  callingCode: CallingCode[];
+  flag: string;
+  name: TranslationLanguageCodeMap | string;
+  cca2: CountryCode;
 }
 export const RegionList = [
   'Africa',
@@ -276,8 +276,8 @@ export const RegionList = [
   'Asia',
   'Europe',
   'Oceania',
-] as const
-export type Region = (typeof RegionList)[number]
+] as const;
+export type Region = (typeof RegionList)[number];
 
 export const SubregionList = [
   'Southern Asia',
@@ -303,8 +303,8 @@ export const SubregionList = [
   'Micronesia',
   'Central Asia',
   'Central Europe',
-] as const
-export type Subregion = (typeof SubregionList)[number]
+] as const;
+export type Subregion = (typeof SubregionList)[number];
 
 export const TranslationLanguageCodeList = [
   'common',
@@ -322,18 +322,18 @@ export const TranslationLanguageCodeList = [
   'fin',
   'zho',
   'isr',
-] as const
+] as const;
 export type TranslationLanguageCode =
-  (typeof TranslationLanguageCodeList)[number]
+  (typeof TranslationLanguageCodeList)[number];
 
 export enum FlagType {
   FLAT = 'flat',
   EMOJI = 'emoji',
 }
 
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 // type guards
 export const isCountryCode = (str: string): str is CountryCode => {
-  return CountryCodeList.some((code) => code === str)
-}
+  return CountryCodeList.some((code) => code === str);
+};

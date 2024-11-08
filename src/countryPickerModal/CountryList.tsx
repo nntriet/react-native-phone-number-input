@@ -62,7 +62,7 @@ interface LetterProps {
   letter: string;
   scrollTo(letter: string): void;
 }
-const Letter = ({ letter, scrollTo }: LetterProps) => {
+const Letter: React.FC<LetterProps> = ({ letter, scrollTo }) => {
   const { fontSize, activeOpacity } = useTheme();
 
   return (
@@ -89,16 +89,16 @@ interface CountryItemProps {
   withCurrency?: boolean;
   onSelect(country: Country): void;
 }
-const CountryItem = (props: CountryItemProps) => {
+const CountryItem: React.FC<CountryItemProps> = ({
+  country,
+  onSelect,
+  withFlag = true,
+  withEmoji,
+  withCallingCode = false,
+  withCurrency,
+}) => {
   const { activeOpacity, itemHeight, flagSize } = useTheme();
-  const {
-    country,
-    onSelect,
-    withFlag,
-    withEmoji,
-    withCallingCode,
-    withCurrency,
-  } = props;
+
   const extraContent: string[] = [];
   if (
     withCallingCode &&
@@ -136,11 +136,8 @@ const CountryItem = (props: CountryItemProps) => {
     </TouchableOpacity>
   );
 };
-CountryItem.defaultProps = {
-  withFlag: true,
-  withCallingCode: false,
-};
-const MemoCountryItem = memo<CountryItemProps>(CountryItem);
+
+const MemoCountryItem: React.FC<CountryItemProps> = memo(CountryItem);
 
 const renderItem =
   (props: Omit<CountryItemProps, 'country'>) =>
@@ -191,6 +188,7 @@ const CountryList: React.FC<CountryListProps> = (props) => {
     .map((country: Country) => (country.name as string).substr(0, 1))
     .join('');
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const scrollTo = (letter?: string, animated: boolean = true) => {
     if (!letter) return;
     const index = indexLetter.indexOf(letter);
@@ -211,6 +209,7 @@ const CountryList: React.FC<CountryListProps> = (props) => {
     if (data && data.length > 0 && filterFocus && !filter) {
       scrollTo(letters[0], false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterFocus]);
 
   const initialNumToRender = Math.round(height / (itemHeight || 1));
@@ -249,6 +248,7 @@ const CountryList: React.FC<CountryListProps> = (props) => {
           contentContainerStyle={styles.letters}
           keyboardShouldPersistTaps="always"
         >
+          {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
           {letters.map((letter) => (
             <Letter key={letter} {...{ letter, scrollTo }} />
           ))}

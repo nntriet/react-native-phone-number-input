@@ -1,10 +1,13 @@
-import React, { memo } from 'react'
-import { Text } from 'react-native'
-import * as nodeEmoji from 'node-emoji'
+import { memo } from 'react';
+import { Text } from 'react-native';
 
 const Emoji = memo(({ name }: { name: string }) => {
-  const emoji = nodeEmoji.get(name)
-  return <Text allowFontScaling={false}>{emoji}</Text>
-})
+  const countryCode = name.replace('flag-', '').toUpperCase();
+  const emoji = countryCode
+    .split('')
+    .map((char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
+    .join('');
+  return <Text allowFontScaling={false}>{emoji}</Text>;
+});
 
-export { Emoji }
+export { Emoji };

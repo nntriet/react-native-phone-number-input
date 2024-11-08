@@ -99,6 +99,7 @@ const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
           setNumber(props.value);
         }
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.disabled, props.value]);
 
     const onSelect = (country: Country) => {

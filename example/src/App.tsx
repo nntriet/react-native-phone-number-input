@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRef, useState } from 'react';
 import {
   SafeAreaView,
@@ -21,7 +22,7 @@ const App = () => {
   const [showMessage, setShowMessage] = useState(false);
   const phoneInput = useRef<PhoneInputRefType>(null);
   return (
-    <>
+    <React.Fragment>
       <StatusBar barStyle="dark-content" />
       <View style={styles.container}>
         <SafeAreaView style={styles.wrapper}>
@@ -77,7 +78,7 @@ const App = () => {
           </TouchableOpacity>
         </SafeAreaView>
       </View>
-    </>
+    </React.Fragment>
   );
 };
 

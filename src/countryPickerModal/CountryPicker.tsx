@@ -88,7 +88,7 @@ export interface CountryPickerProps {
   renderCountryFilter?(
     props: React.ComponentProps<typeof CountryFilter>
   ): ReactNode;
-  onSelect(country: Country): void;
+  onSelect?(country: Country): void;
   onOpen?(): void;
   onClose?(): void;
 }
@@ -142,6 +142,7 @@ const CountryPicker: React.FC<CountryPickerProps> = ({
     if (state.visible !== props.visible) {
       setState({ ...state, visible: props.visible || false });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.visible]);
 
   const onOpen = () => {
@@ -157,11 +158,13 @@ const CountryPicker: React.FC<CountryPickerProps> = ({
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const setFilter = (filter: string) => setState({ ...state, filter });
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const setCountries = (countries: Country[]) =>
     setState({ ...state, countries });
   const onSelectClose = (country: Country) => {
-    onSelect(country);
+    onSelect?.(country);
     onClose();
   };
   const onFocus = () => setState({ ...state, filterFocus: true });
@@ -192,12 +195,14 @@ const CountryPicker: React.FC<CountryPickerProps> = ({
       preferredCountries,
       withAlphaFilter
     )
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       .then((countries) => (cancel ? null : setCountries(countries)))
       .catch(console.warn);
 
     return () => {
       cancel = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [translation, withEmoji]);
 
   return (
@@ -217,6 +222,7 @@ const CountryPicker: React.FC<CountryPickerProps> = ({
             closeButtonStyle,
             withCloseButton,
           }}
+          // eslint-disable-next-line @typescript-eslint/no-shadow
           renderFilter={(props) =>
             renderFilter({
               ...props,

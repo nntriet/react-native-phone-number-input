@@ -1,17 +1,17 @@
-import React from 'react'
+import React from 'react';
 import {
   Image,
-  ImageSourcePropType,
-  ImageStyle,
+  type ImageSourcePropType,
+  type ImageStyle,
   Platform,
-  StyleProp,
+  type StyleProp,
   StyleSheet,
   TouchableNativeFeedback,
   TouchableOpacity,
   View,
-  ViewStyle,
-} from 'react-native'
-import { useTheme } from './CountryTheme'
+  type ViewStyle,
+} from 'react-native';
+import { useTheme } from './CountryTheme';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,22 +25,22 @@ const styles = StyleSheet.create({
     width: 25,
     resizeMode: 'contain',
   },
-})
+});
 
 interface CloseButtonProps {
-  style?: StyleProp<ViewStyle>
-  imageStyle?: StyleProp<ImageStyle>
-  image?: ImageSourcePropType
-  onPress?(): void
+  style?: StyleProp<ViewStyle>;
+  imageStyle?: StyleProp<ImageStyle>;
+  image?: ImageSourcePropType;
+  onPress?(): void;
 }
 
 const CloseButtonAndroid: React.FC<CloseButtonProps> = (props) => {
-  let closeImage: ImageSourcePropType = require('./assets/images/close.android.png')
+  let closeImage: ImageSourcePropType = require('./assets/images/close.android.png');
 
   if (props.image) {
-    closeImage = props.image
+    closeImage = props.image;
   }
-  const { onBackgroundTextColor } = useTheme()
+  const { onBackgroundTextColor } = useTheme();
   return (
     <View style={[styles.container, props.style]}>
       <TouchableNativeFeedback
@@ -63,16 +63,16 @@ const CloseButtonAndroid: React.FC<CloseButtonProps> = (props) => {
         </View>
       </TouchableNativeFeedback>
     </View>
-  )
-}
+  );
+};
 
 const CloseButtonIOS: React.FC<CloseButtonProps> = (props) => {
-  let closeImage = require('./assets/images/close.ios.png')
+  let closeImage = require('./assets/images/close.ios.png');
 
   if (props.image) {
-    closeImage = props.image
+    closeImage = props.image;
   }
-  const { onBackgroundTextColor } = useTheme()
+  const { onBackgroundTextColor } = useTheme();
   return (
     <View style={[styles.container, props.style]}>
       <TouchableOpacity onPress={props.onPress}>
@@ -86,12 +86,12 @@ const CloseButtonIOS: React.FC<CloseButtonProps> = (props) => {
         />
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 export default Platform.select({
   ios: CloseButtonIOS,
   android: CloseButtonAndroid,
   web: CloseButtonIOS,
   default: CloseButtonIOS,
-})
+});

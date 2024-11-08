@@ -1,2 +1,2 @@
 import Modal from 'react-native';
-export { Modal }
+export { Modal };
