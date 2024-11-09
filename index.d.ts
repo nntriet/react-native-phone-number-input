@@ -2,16 +2,15 @@ import { ForwardRefExoticComponent, RefAttributes } from 'react';
 import { StyleProp, TextInputProps, TextStyle, ViewStyle } from 'react-native';
 
 export type {
+  CallingCode,
   Country,
   CountryCode,
-  CallingCode,
+  CountryFilterProps,
+  CountryPickerModalProps,
   Region,
   Subregion,
   Translation,
 } from './src/countryPickerModal';
-
-export type { CountryFilterProps } from './src/countryPickerModal/CountryFilter';
-export type { CountryPickerProps } from './src/countryPickerModal/CountryPicker';
 
 export interface PhoneInputProps {
   withDarkTheme?: boolean;
@@ -26,6 +25,8 @@ export interface PhoneInputProps {
   onChangeCountry?: (country: Country) => void;
   onChangeText?: (text: string) => void;
   onChangeFormattedText?: (text: string) => void;
+  onBlur?: () => void;
+  onFocus?: () => void;
   renderDropdownImage?: JSX.Element;
   containerStyle?: StyleProp<ViewStyle>;
   textContainerStyle?: StyleProp<ViewStyle>;
@@ -36,7 +37,7 @@ export interface PhoneInputProps {
   countryPickerButtonStyle?: StyleProp<ViewStyle>;
   layout?: 'first' | 'second';
   filterProps?: CountryFilterProps;
-  countryPickerProps?: CountryPickerProps;
+  countryPickerProps?: CountryPickerModalProps;
   flagSize?: number;
 }
 

@@ -1,5 +1,5 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React from 'react';
 import {
   Image,
   Text,
@@ -12,19 +12,18 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import {
+import CountryPicker, {
   CountryModalProvider,
+  DARK_THEME,
   DEFAULT_THEME,
   Flag,
   getCallingCode,
   type CallingCode,
   type Country,
   type CountryCode,
+  type CountryFilterProps,
+  type CountryPickerModalProps,
 } from './countryPickerModal';
-import type { CountryFilterProps } from './countryPickerModal/CountryFilter';
-import CountryPicker, {
-  type CountryPickerProps,
-} from './countryPickerModal/CountryPicker';
 import styles from './styles';
 
 const dropDown =
@@ -44,6 +43,8 @@ export type PhoneInputProps = {
   onChangeCountry?: (country: Country) => void;
   onChangeText?: (text: string) => void;
   onChangeFormattedText?: (text: string) => void;
+  onBlur?: () => void;
+  onFocus?: () => void;
   renderDropdownImage?: JSX.Element;
   containerStyle?: StyleProp<ViewStyle>;
   textContainerStyle?: StyleProp<ViewStyle>;
@@ -54,7 +55,7 @@ export type PhoneInputProps = {
   countryPickerButtonStyle?: StyleProp<ViewStyle>;
   layout?: 'first' | 'second';
   filterProps?: CountryFilterProps;
-  countryPickerProps?: CountryPickerProps;
+  countryPickerProps?: CountryPickerModalProps;
   flagSize?: number;
 };
 
@@ -68,21 +69,23 @@ export type PhoneInputRefType = {
   };
 };
 
-const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
+const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
   (props, ref) => {
-    const [code, setCode] = useState<string | undefined>(
+    const [code, setCode] = React.useState<string | undefined>(
       props.defaultCode ? undefined : '91'
     );
-    const [number, setNumber] = useState<string>(
+    const [number, setNumber] = React.useState<string>(
       props.value || props.defaultValue || ''
     );
-    const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const [countryCode, setCountryCode] = useState<CountryCode>(
+    const [modalVisible, setModalVisible] = React.useState<boolean>(false);
+    const [countryCode, setCountryCode] = React.useState<CountryCode>(
       props.defaultCode || 'IN'
     );
-    const [disabled, setDisabled] = useState<boolean>(props.disabled || false);
+    const [disabled, setDisabled] = React.useState<boolean>(
+      props.disabled || false
+    );
 
-    useEffect(() => {
+    React.useEffect(() => {
       const loadDefaultCode = async () => {
         if (props.defaultCode) {
           const callingCode = await getCallingCode(props.defaultCode);
@@ -92,7 +95,7 @@ const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
       loadDefaultCode();
     }, [props.defaultCode]);
 
-    useEffect(() => {
+    React.useEffect(() => {
       if (props.disabled !== disabled) {
         if ((props.value || props.value === '') && props.value !== number) {
           setDisabled(props.disabled || false);
@@ -102,40 +105,46 @@ const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.disabled, props.value]);
 
-    const onSelect = (country: Country) => {
-      setCountryCode(country.cca2);
-      setCode(country.callingCode[0]);
+    const onSelect = React.useCallback(
+      (country: Country) => {
+        setCountryCode(country.cca2);
+        setCode(country.callingCode[0]);
 
-      if (props.onChangeFormattedText) {
-        if (country.callingCode[0]) {
-          props.onChangeFormattedText(`+${country.callingCode[0]}${number}`);
-        } else {
-          props.onChangeFormattedText(number);
+        if (props.onChangeFormattedText) {
+          if (country.callingCode[0]) {
+            props.onChangeFormattedText(`+${country.callingCode[0]}${number}`);
+          } else {
+            props.onChangeFormattedText(number);
+          }
         }
-      }
 
-      if (props.onChangeCountry) {
-        props.onChangeCountry(country);
-      }
-    };
-
-    const onChangeText = (text: string) => {
-      setNumber(text);
-      if (props.onChangeText) {
-        props.onChangeText(text);
-      }
-      if (props.onChangeFormattedText) {
-        if (code) {
-          props.onChangeFormattedText(
-            text.length > 0 ? `+${code}${text}` : text
-          );
-        } else {
-          props.onChangeFormattedText(text);
+        if (props.onChangeCountry) {
+          props.onChangeCountry(country);
         }
-      }
-    };
+      },
+      [number, props]
+    );
 
-    const renderDropdownImage = () => {
+    const onChangeText = React.useCallback(
+      (text: string) => {
+        setNumber(text);
+        if (props.onChangeText) {
+          props.onChangeText(text);
+        }
+        if (props.onChangeFormattedText) {
+          if (code) {
+            props.onChangeFormattedText(
+              text.length > 0 ? `+${code}${text}` : text
+            );
+          } else {
+            props.onChangeFormattedText(text);
+          }
+        }
+      },
+      [code, props]
+    );
+
+    const renderDropdownImage = React.useCallback(() => {
       return (
         <Image
           source={{ uri: dropDown }}
@@ -143,9 +152,9 @@ const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
           style={styles.dropDownImage}
         />
       );
-    };
+    }, []);
 
-    const renderFlagButton = () => {
+    const renderFlagButton = React.useCallback(() => {
       const { layout = 'first', flagSize } = props;
       if (layout === 'first') {
         return (
@@ -156,9 +165,9 @@ const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
         );
       }
       return <View />;
-    };
+    }, [countryCode, props]);
 
-    useImperativeHandle(ref, () => ({
+    React.useImperativeHandle(ref, () => ({
       getCountryCode: () => countryCode,
       getCallingCode: () => code,
       isValidNumber: (phoneNumber: string) => {
@@ -172,7 +181,7 @@ const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
       getNumberAfterPossiblyEliminatingZero: () => {
         let currentNumber = number;
         if (currentNumber.length > 0 && currentNumber.startsWith('0')) {
-          currentNumber = currentNumber.substr(1);
+          currentNumber = currentNumber.slice(1);
         }
         return {
           number: currentNumber,
@@ -194,10 +203,14 @@ const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
       containerStyle,
       textContainerStyle,
       renderDropdownImage: customDropdownImage,
-      countryPickerProps = {},
+      countryPickerProps = {
+        theme: withDarkTheme ? DARK_THEME : DEFAULT_THEME,
+      },
       filterProps = {},
       countryPickerButtonStyle,
       layout = 'first',
+      onBlur,
+      onFocus,
     } = props;
 
     return (
@@ -229,7 +242,6 @@ const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
               withCallingCode
               disableNativeModal={disabled}
               visible={modalVisible}
-              // theme={withDarkTheme ? DARK_THEME : DEFAULT_THEME}
               renderFlagButton={renderFlagButton}
               onClose={() => setModalVisible(false)}
               {...countryPickerProps}
@@ -255,6 +267,8 @@ const PhoneInput = forwardRef<PhoneInputRefType, PhoneInputProps>(
               keyboardAppearance={withDarkTheme ? 'dark' : 'default'}
               keyboardType="number-pad"
               autoFocus={autoFocus}
+              onBlur={onBlur}
+              onFocus={onFocus}
               {...textInputProps}
             />
           </View>

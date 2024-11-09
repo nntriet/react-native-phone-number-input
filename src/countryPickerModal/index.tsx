@@ -7,7 +7,7 @@ import type {
 } from 'react-native';
 import { CountryProvider, DEFAULT_COUNTRY_CONTEXT } from './CountryContext';
 import type { CountryFilterProps } from './CountryFilter';
-import CountryPicker from './CountryPicker';
+import CountryPicker, { type CountryPickerProps } from './CountryPicker';
 import { DEFAULT_THEME, type Theme, ThemeProvider } from './CountryTheme';
 import type { FlagButtonProps } from './FlagButton';
 import {
@@ -18,7 +18,7 @@ import {
   type TranslationLanguageCode,
 } from './types';
 
-interface Props {
+export type CountryPickerModalProps = CountryPickerProps & {
   allowFontScaling?: boolean;
   countryCode: CountryCode;
   region?: Region;
@@ -52,21 +52,22 @@ interface Props {
   onSelect(country: Country): void;
   onOpen?(): void;
   onClose?(): void;
-}
+};
 
-const Main = ({ theme, translation, ...props }: Props) => {
+const Main: React.FC<CountryPickerModalProps> = ({
+  onSelect = () => {},
+  withEmoji = true,
+  theme,
+  translation,
+  ...props
+}) => {
   return (
     <ThemeProvider theme={{ ...DEFAULT_THEME, ...theme }}>
       <CountryProvider value={{ ...DEFAULT_COUNTRY_CONTEXT, translation }}>
-        <CountryPicker {...props} />
+        <CountryPicker onSelect={onSelect} withEmoji={withEmoji} {...props} />
       </CountryProvider>
     </ThemeProvider>
   );
-};
-
-Main.defaultProps = {
-  onSelect: () => {},
-  withEmoji: true,
 };
 
 export default Main;
@@ -83,3 +84,4 @@ export { Flag } from './Flag';
 export { FlagButton } from './FlagButton';
 export { HeaderModal } from './HeaderModal';
 export * from './types';
+export type { CountryFilterProps, CountryPickerProps };

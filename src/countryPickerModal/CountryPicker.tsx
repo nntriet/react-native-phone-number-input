@@ -54,7 +54,7 @@ const renderFilter = (props: RenderCountryFilterProps): ReactNode =>
     <CountryFilter {...props} />
   );
 
-export interface CountryPickerProps {
+export type CountryPickerProps = {
   allowFontScaling?: boolean;
   countryCode?: CountryCode;
   region?: Region;
@@ -91,7 +91,7 @@ export interface CountryPickerProps {
   onSelect?(country: Country): void;
   onOpen?(): void;
   onClose?(): void;
-}
+};
 
 const CountryPicker: React.FC<CountryPickerProps> = ({
   allowFontScaling = true,

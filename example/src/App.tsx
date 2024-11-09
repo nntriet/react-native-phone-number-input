@@ -46,7 +46,6 @@ const App = () => {
               setFormattedValue(text);
               setCountryCode(phoneInput.current?.getCountryCode() || '');
             }}
-            countryPickerProps={{ withAlphaFilter: true }}
             disabled={disabled}
             withDarkTheme
             withShadow
