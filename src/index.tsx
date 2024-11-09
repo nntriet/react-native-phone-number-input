@@ -45,7 +45,7 @@ export type PhoneInputProps = {
   onChangeFormattedText?: (text: string) => void;
   onBlur?: () => void;
   onFocus?: () => void;
-  renderDropdownImage?: JSX.Element;
+  renderDropdownImage?: React.ReactNode;
   containerStyle?: StyleProp<ViewStyle>;
   textContainerStyle?: StyleProp<ViewStyle>;
   textInputProps?: TextInputProps;
@@ -250,7 +250,9 @@ const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
               <Text style={[styles.codeText, codeTextStyle]}>{`+${code}`}</Text>
             )}
             {!disableArrowIcon && (
-              <>{customDropdownImage || renderDropdownImage()}</>
+              <React.Fragment>
+                {customDropdownImage || renderDropdownImage()}
+              </React.Fragment>
             )}
           </TouchableOpacity>
           <View style={[styles.textContainer, textContainerStyle]}>

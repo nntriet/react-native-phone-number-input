@@ -1,4 +1,4 @@
-import { ForwardRefExoticComponent, RefAttributes } from 'react';
+import React, { ForwardRefExoticComponent, RefAttributes } from 'react';
 import { StyleProp, TextInputProps, TextStyle, ViewStyle } from 'react-native';
 
 export type {
@@ -9,7 +9,6 @@ export type {
   CountryPickerModalProps,
   Region,
   Subregion,
-  Translation,
 } from './src/countryPickerModal';
 
 export interface PhoneInputProps {
@@ -27,7 +26,7 @@ export interface PhoneInputProps {
   onChangeFormattedText?: (text: string) => void;
   onBlur?: () => void;
   onFocus?: () => void;
-  renderDropdownImage?: JSX.Element;
+  renderDropdownImage?: React.ReactNode;
   containerStyle?: StyleProp<ViewStyle>;
   textContainerStyle?: StyleProp<ViewStyle>;
   textInputProps?: TextInputProps;
@@ -42,9 +41,13 @@ export interface PhoneInputProps {
 }
 
 export interface PhoneInputRefType {
-  getValue: () => string;
-  getCountryCode: () => string;
+  getCountryCode: () => CountryCode;
+  getCallingCode: () => CallingCode | undefined;
   isValidNumber: (number: string) => boolean;
+  getNumberAfterPossiblyEliminatingZero: () => {
+    number: string;
+    formattedNumber: string;
+  };
 }
 
 declare const PhoneInput: ForwardRefExoticComponent<
