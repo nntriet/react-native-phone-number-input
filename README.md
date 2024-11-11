@@ -37,6 +37,10 @@ Using npm
 npm i @linhnguyen96114/react-native-phone-input
 Using yarn
 yarn add @linhnguyen96114/react-native-phone-input
+
+for ios:
+cd ios
+pod install
 ```
 ## 💡 Usage
 
@@ -145,6 +149,7 @@ const App = () => {
 | `filterProps`              | `CountryFilterProps`         | Country filter props                 |
 | `countryPickerProps`       | `CountryPickerModalProps`    | Country picker modal props           |
 | `flagSize`                 | `number`                     | Size of the country flag             |
+| `showCountryCode`          | `boolean`                    | Show the country code               |
 
 ## 🔧 Methods
 

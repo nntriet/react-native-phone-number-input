@@ -57,6 +57,7 @@ export type PhoneInputProps = {
   filterProps?: CountryFilterProps;
   countryPickerProps?: CountryPickerModalProps;
   flagSize?: number;
+  showCountryCode?: boolean;
 };
 
 export type PhoneInputRefType = {
@@ -144,7 +145,7 @@ const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
       [code, props]
     );
 
-    const renderDropdownImage = React.useCallback(() => {
+    const renderDefaultDropdownImage = React.useMemo(() => {
       return (
         <Image
           source={{ uri: dropDown }}
@@ -164,7 +165,7 @@ const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
           />
         );
       }
-      return <View />;
+      return null;
     }, [countryCode, props]);
 
     React.useImperativeHandle(ref, () => ({
@@ -202,7 +203,7 @@ const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
       flagButtonStyle,
       containerStyle,
       textContainerStyle,
-      renderDropdownImage: customDropdownImage,
+      renderDropdownImage = renderDefaultDropdownImage,
       countryPickerProps = {
         theme: withDarkTheme ? DARK_THEME : DEFAULT_THEME,
       },
@@ -211,6 +212,7 @@ const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
       layout = 'first',
       onBlur,
       onFocus,
+      showCountryCode = true,
     } = props;
 
     return (
@@ -246,13 +248,11 @@ const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
               onClose={() => setModalVisible(false)}
               {...countryPickerProps}
             />
-            {code && layout === 'second' && (
+            {showCountryCode && code && layout === 'second' && (
               <Text style={[styles.codeText, codeTextStyle]}>{`+${code}`}</Text>
             )}
             {!disableArrowIcon && (
-              <React.Fragment>
-                {customDropdownImage || renderDropdownImage()}
-              </React.Fragment>
+              <React.Fragment>{renderDropdownImage}</React.Fragment>
             )}
           </TouchableOpacity>
           <View style={[styles.textContainer, textContainerStyle]}>

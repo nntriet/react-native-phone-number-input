@@ -38,6 +38,7 @@ export interface PhoneInputProps {
   filterProps?: CountryFilterProps;
   countryPickerProps?: CountryPickerModalProps;
   flagSize?: number;
+  showCountryCode?: boolean;
 }
 
 export interface PhoneInputRefType {
