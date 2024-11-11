@@ -19,8 +19,14 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
 
-      - name: Install dependencies
-        run: yarn install --immutable
+      - name: Install dependencies and update lockfile
+        run: |
+          yarn install
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add yarn.lock
+          git commit -m "chore: update yarn.lock" || echo "No changes to commit"
+          git push || echo "No changes to push"
 
       - name: Type check
         run: yarn typecheck
