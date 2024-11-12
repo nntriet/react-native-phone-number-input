@@ -256,7 +256,7 @@ const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
             )}
           </TouchableOpacity>
           <View style={[styles.textContainer, textContainerStyle]}>
-            {code && layout === 'first' && (
+            {showCountryCode && code && layout === 'first' && (
               <Text style={[styles.codeText, codeTextStyle]}>{`+${code}`}</Text>
             )}
             <TextInput
