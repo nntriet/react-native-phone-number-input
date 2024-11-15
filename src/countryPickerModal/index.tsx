@@ -78,6 +78,7 @@ export { default as CountryModalProvider } from './CountryModalProvider';
 export {
   getCountriesAsync as getAllCountries,
   getCountryCallingCodeAsync as getCallingCode,
+  loadDataAsync,
 } from './CountryService';
 export { DARK_THEME, DEFAULT_THEME } from './CountryTheme';
 export { Flag } from './Flag';

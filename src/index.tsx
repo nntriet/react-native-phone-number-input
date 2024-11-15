@@ -18,6 +18,7 @@ import CountryPicker, {
   DEFAULT_THEME,
   Flag,
   getCallingCode,
+  loadDataAsync,
   type CallingCode,
   type Country,
   type CountryCode,
@@ -35,6 +36,7 @@ export type PhoneInputProps = {
   withShadow?: boolean;
   autoFocus?: boolean;
   defaultCode?: CountryCode;
+  defaultCallingCode?: string;
   value?: string;
   defaultValue?: string;
   disabled?: boolean;
@@ -72,8 +74,22 @@ export type PhoneInputRefType = {
 
 const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
   (props, ref) => {
+    const getCountryCodeByCallingCode = React.useCallback(
+      async (callingCode: string) => {
+        const countries = await loadDataAsync();
+        if (!countries) return 'US';
+
+        const countryEntry = Object.entries(countries).find(
+          ([_, country]) => country.callingCode[0] === callingCode
+        );
+
+        return countryEntry ? (countryEntry[0] as CountryCode) : 'US';
+      },
+      []
+    );
+
     const [code, setCode] = React.useState<string | undefined>(
-      props.defaultCode ? undefined : '91'
+      props.defaultCallingCode || (props.defaultCode ? undefined : '91')
     );
     const [number, setNumber] = React.useState<string>(
       props.value || props.defaultValue || ''
@@ -87,6 +103,21 @@ const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
     );
 
     React.useEffect(() => {
+      const setupDefaultCallingCode = async () => {
+        if (props.defaultCallingCode) {
+          // eslint-disable-next-line @typescript-eslint/no-shadow
+          const countryCode = await getCountryCodeByCallingCode(
+            props.defaultCallingCode
+          );
+          setCountryCode(countryCode);
+          setCode(props.defaultCallingCode);
+        }
+      };
+
+      setupDefaultCallingCode();
+    }, [props.defaultCallingCode, getCountryCodeByCallingCode]);
+
+    React.useEffect(() => {
       const loadDefaultCode = async () => {
         if (props.defaultCode) {
           const callingCode = await getCallingCode(props.defaultCode);
@@ -98,13 +129,9 @@ const PhoneInput = React.forwardRef<PhoneInputRefType, PhoneInputProps>(
 
     React.useEffect(() => {
       if (props.disabled !== disabled) {
-        if ((props.value || props.value === '') && props.value !== number) {
-          setDisabled(props.disabled || false);
-          setNumber(props.value);
-        }
+        setDisabled(props.disabled || false);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.disabled, props.value]);
+    }, [disabled, props.disabled]);
 
     const onSelect = React.useCallback(
       (country: Country) => {
