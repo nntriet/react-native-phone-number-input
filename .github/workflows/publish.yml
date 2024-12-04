@@ -18,13 +18,22 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: "20"
+                  node-version: "22"
                   registry-url: "https://registry.npmjs.org"
-                  cache: "yarn"
 
-            - name: Install dependencies and update lockfile
+            - name: Setup Yarn
               run: |
-                  yarn install --no-immutable
+                  rm -rf .yarn .yarnrc.yml
+                  corepack enable
+                  corepack prepare yarn@3.6.1 --activate
+                  echo 'nodeLinker: node-modules' > .yarnrc.yml
+                  echo 'enableGlobalCache: true' >> .yarnrc.yml
+                  echo 'enableImmutableInstalls: false' >> .yarnrc.yml
+
+            - name: Install dependencies
+              run: |
+                  yarn install
+                  yarn add -D @babel/core@^7.20.0 @babel/preset-env@^7.20.0
 
             - name: Type check
               run: yarn typecheck
