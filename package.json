@@ -44,8 +44,7 @@
         "lint:fix": "eslint \"**/*.{js,ts,tsx}\" --fix",
         "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
         "prepare": "bob build",
-        "release": "release-it",
-        "postinstall": "yarn lefthook install"
+        "release": "release-it"
     },
     "keywords": [
         "react-native",
